@@ -193,7 +193,8 @@ export default function GlobalFloatingMenu() {
     { num: "02", label: "ABOUT", href: "#about" },
     { num: "03", label: "EXPERIENCE", href: "#experience" },
     { num: "04", label: "INTERLUDE", href: "#interlude" },
-    { num: "05", label: "CONTACT", href: "#contact" },
+    { num: "05", label: "IMPRESSIONS", href: "#testimonials" },
+    { num: "06", label: "CONTACT", href: "#contact" },
   ];
 
   const handleNavClick = (href: string) => {

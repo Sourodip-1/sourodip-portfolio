@@ -2,10 +2,35 @@
 
 import React from "react";
 import Image from "next/image";
-import { TechIcons } from "./TechIcons";
 import { Button03 } from "@/components/ui/pixel-broke-button";
 import LottieLoaderMorph from "./LottieLoaderMorph";
 import { IndianJaliFlank, IndianJharokhaFlank, IndianTransitionGuide } from "./IndianSideMotifs";
+
+// Tech stack using official Simple Icons CDN
+const TECH_STACK = [
+  { name: "Python", icon: "https://cdn.simpleicons.org/python/3776AB" },
+  { name: "C++", icon: "https://cdn.simpleicons.org/cplusplus/00599C" },
+  { name: "C", icon: "https://cdn.simpleicons.org/c/00599C" },
+  { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript/F7DF1E" },
+  { name: "Tailwind CSS", icon: "https://cdn.simpleicons.org/tailwindcss/06B6D4" },
+  { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/000000" },
+  { name: "FastAPI", icon: "https://cdn.simpleicons.org/fastapi/009688" },
+  { name: "Git", icon: "https://cdn.simpleicons.org/git/F05032" },
+  { name: "Docker", icon: "https://cdn.simpleicons.org/docker/2496ED" },
+  { name: "MongoDB", icon: "https://cdn.simpleicons.org/mongodb/47A248" },
+  { name: "PostgreSQL", icon: "https://cdn.simpleicons.org/postgresql/4169E1" },
+];
+
+// Tools & platforms using Simple Icons CDN and custom/local SVGs
+const TOOLS_AND_PLATFORMS = [
+  { name: "Adobe Photoshop", icon: "/icons/adobephotoshop.svg" },
+  { name: "Adobe Illustrator", icon: "/icons/adobeillustrator.svg" },
+  { name: "GitHub", icon: "https://cdn.simpleicons.org/github/181717" },
+  { name: "Antigravity", icon: "/icons/antigravity.svg" },
+  { name: "Gemini", icon: "https://cdn.simpleicons.org/googlegemini/8E75B2" },
+  { name: "Cloudflare", icon: "https://cdn.simpleicons.org/cloudflare/F38020" },
+  { name: "Vercel", icon: "https://cdn.simpleicons.org/vercel/000000" },
+];
 
 // The user's exact stepped modular block SVG shape
 export function StepBlock({
@@ -132,12 +157,9 @@ export default function AboutSection() {
 
               <Button03
                 text="VIEW RESUME"
-                href="#contact"
+                href="/Sourodip_Roy_Resume.pdf"
+                download="Sourodip_Roy_Resume.pdf"
                 variant="dark"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert("Resume download / viewing initiated.");
-                }}
               />
             </div>
 
@@ -296,10 +318,28 @@ export default function AboutSection() {
 
           {/* CARD 1: METRICS / QUICK STATS (5 Cols) */}
           <div className="lg:col-span-5 bg-white border border-black/10 rounded-2xl p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-center justify-between">
-            <div className="grid grid-cols-4 w-full divide-x divide-black/10">
+            <div className="grid grid-cols-2 sm:grid-cols-4 w-full gap-y-4 sm:gap-y-0 sm:divide-x divide-black/10">
 
-              {/* Stat 1: Projects */}
-              <div className="flex flex-col items-center text-center px-1.5 sm:px-3">
+              {/* Stat 1: Founder */}
+              <div className="flex flex-col items-center text-center px-1.5 sm:px-2 md:px-3">
+                <div className="text-[#0047FF] mb-1.5">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                  </svg>
+                </div>
+                <div className="font-display font-black text-base sm:text-xl md:text-2xl text-black leading-none mb-1">
+                  Founder
+                </div>
+                <div className="font-mono text-[9px] sm:text-[10px] font-bold text-black tracking-wider uppercase">
+                  PostPipe
+                </div>
+                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5 leading-tight">
+                  Building developer tools
+                </div>
+              </div>
+
+              {/* Stat 2: Major projects */}
+              <div className="flex flex-col items-center text-center px-1.5 sm:px-2 md:px-3">
                 <div className="text-[#0047FF] mb-1.5">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
@@ -308,58 +348,38 @@ export default function AboutSection() {
                   </svg>
                 </div>
                 <div className="font-display font-black text-xl sm:text-2xl text-black leading-none mb-1">
-                  +10
-                </div>
-                <div className="font-mono text-[9px] sm:text-[10px] font-bold text-black tracking-wider uppercase">
-                  PROJECTS
-                </div>
-                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5">
-                  Built &amp; shipped
-                </div>
-              </div>
-
-              {/* Stat 2: Internships */}
-              <div className="flex flex-col items-center text-center px-1.5 sm:px-3">
-                <div className="text-[#0047FF] mb-1.5">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                </div>
-                <div className="font-display font-black text-xl sm:text-2xl text-black leading-none mb-1">
-                  +2
-                </div>
-                <div className="font-mono text-[9px] sm:text-[10px] font-bold text-black tracking-wider uppercase">
-                  INTERNSHIPS
-                </div>
-                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5">
-                  Real world experience
-                </div>
-              </div>
-
-              {/* Stat 3: Tech Stacks */}
-              <div className="flex flex-col items-center text-center px-1.5 sm:px-3">
-                <div className="text-[#0047FF] mb-1.5">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                  </svg>
-                </div>
-                <div className="font-display font-black text-xl sm:text-2xl text-black leading-none mb-1">
                   5+
                 </div>
                 <div className="font-mono text-[9px] sm:text-[10px] font-bold text-black tracking-wider uppercase">
-                  TECH STACKS
+                  Major projects
                 </div>
-                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5">
-                  Always learning
+                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5 leading-tight">
+                  Products &amp; experiments
                 </div>
               </div>
 
-              {/* Stat 4: Ideas */}
-              <div className="flex flex-col items-center text-center px-1.5 sm:px-3">
+              {/* Stat 3: Minor projects */}
+              <div className="flex flex-col items-center text-center px-1.5 sm:px-2 md:px-3">
+                <div className="text-[#0047FF] mb-1.5">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <line x1="8" y1="21" x2="16" y2="21" />
+                    <line x1="12" y1="17" x2="12" y2="21" />
+                  </svg>
+                </div>
+                <div className="font-display font-black text-xl sm:text-2xl text-black leading-none mb-1">
+                  15+
+                </div>
+                <div className="font-mono text-[9px] sm:text-[10px] font-bold text-black tracking-wider uppercase">
+                  Minor projects
+                </div>
+                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5 leading-tight">
+                  Private &amp; smaller builds
+                </div>
+              </div>
+
+              {/* Stat 4: Always building */}
+              <div className="flex flex-col items-center text-center px-1.5 sm:px-2 md:px-3">
                 <div className="text-[#0047FF] mb-1.5">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -369,9 +389,9 @@ export default function AboutSection() {
                   ∞
                 </div>
                 <div className="font-mono text-[9px] sm:text-[10px] font-bold text-black tracking-wider uppercase">
-                  IDEAS
+                  Always building
                 </div>
-                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5">
+                <div className="font-mono text-[8px] sm:text-[9px] text-black/50 mt-0.5 leading-tight">
                   Still counting...
                 </div>
               </div>
@@ -386,55 +406,22 @@ export default function AboutSection() {
               <span>TECH STACK</span>
             </div>
 
-            {/* 2 Rows of 7 Tech Icons */}
-            <div className="space-y-2.5">
-              {/* Row 1: Python, C++, JS, Tailwind, Next.js, Node.js, MongoDB */}
-              <div className="grid grid-cols-7 gap-2">
-                {[
-                  { key: "python", title: "Python" },
-                  { key: "cpp", title: "C++" },
-                  { key: "javascript", title: "JavaScript" },
-                  { key: "tailwind", title: "Tailwind CSS" },
-                  { key: "nextjs", title: "Next.js" },
-                  { key: "nodejs", title: "Node.js" },
-                  { key: "mongodb", title: "MongoDB" },
-                ].map((item) => {
-                  const Icon = TechIcons[item.key];
-                  return (
-                    <div
-                      key={item.key}
-                      title={item.title}
-                      className="aspect-square rounded-xl bg-[#F8F9FB] border border-black/5 flex items-center justify-center hover:scale-110 hover:shadow-md transition-all cursor-pointer p-1.5"
-                    >
-                      {Icon && <Icon size={20} />}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Row 2: PostgreSQL, FastAPI, Git, Docker, Kubernetes, Azure, Cloudflare */}
-              <div className="grid grid-cols-7 gap-2">
-                {[
-                  { key: "postgresql", title: "PostgreSQL" },
-                  { key: "fastapi", title: "FastAPI" },
-                  { key: "git", title: "Git" },
-                  { key: "docker", title: "Docker" },
-                  { key: "kubernetes", title: "Kubernetes" },
-                  { key: "azure", title: "Microsoft Azure" },
-                  { key: "cloudflare", title: "Cloudflare" },
-                ].map((item) => {
-                  const Icon = TechIcons[item.key];
-                  return (
-                    <div
-                      key={item.key}
-                      title={item.title}
-                      className="aspect-square rounded-xl bg-[#F8F9FB] border border-black/5 flex items-center justify-center hover:scale-110 hover:shadow-md transition-all cursor-pointer p-1.5"
-                    >
-                      {Icon && <Icon size={20} />}
-                    </div>
-                  );
-                })}
-              </div>
+            {/* 11 Tech Icons using Simple Icons CDN */}
+            <div className="grid grid-cols-6 gap-2 sm:gap-2.5">
+              {TECH_STACK.map((item) => (
+                <div
+                  key={item.name}
+                  title={item.name}
+                  className="aspect-square rounded-xl bg-[#F8F9FB] border border-black/5 hover:border-[#0047FF]/30 flex items-center justify-center hover:scale-110 hover:shadow-md transition-all cursor-pointer p-2 group"
+                >
+                  <img
+                    src={item.icon}
+                    alt={item.name}
+                    className="w-5 h-5 object-contain transition-transform group-hover:scale-110"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
@@ -445,49 +432,22 @@ export default function AboutSection() {
               <span>TOOLS &amp; PLATFORMS</span>
             </div>
 
-            {/* 2 Rows of 4 Tool Icons */}
-            <div className="space-y-2.5">
-              {/* Row 1: GitHub, VS Code, Figma, Notion */}
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { key: "github", title: "GitHub" },
-                  { key: "vscode", title: "VS Code" },
-                  { key: "figma", title: "Figma" },
-                  { key: "notion", title: "Notion" },
-                ].map((item) => {
-                  const Icon = TechIcons[item.key];
-                  return (
-                    <div
-                      key={item.key}
-                      title={item.title}
-                      className="aspect-square rounded-xl bg-[#F8F9FB] border border-black/5 flex items-center justify-center hover:scale-110 hover:shadow-md transition-all cursor-pointer p-1.5"
-                    >
-                      {Icon && <Icon size={20} />}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Row 2: Postman, Vercel, Database, Cloudflare */}
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { key: "postman", title: "Postman" },
-                  { key: "vercel", title: "Vercel" },
-                  { key: "database", title: "Database Systems" },
-                  { key: "cloudflare", title: "Edge Network" },
-                ].map((item) => {
-                  const Icon = TechIcons[item.key];
-                  return (
-                    <div
-                      key={item.key}
-                      title={item.title}
-                      className="aspect-square rounded-xl bg-[#F8F9FB] border border-black/5 flex items-center justify-center hover:scale-110 hover:shadow-md transition-all cursor-pointer p-1.5"
-                    >
-                      {Icon && <Icon size={20} />}
-                    </div>
-                  );
-                })}
-              </div>
+            {/* 7 Tool Icons: Photoshop, Illustrator, GitHub, Antigravity, Gemini, Cloudflare, Vercel */}
+            <div className="grid grid-cols-4 gap-2 sm:gap-2.5">
+              {TOOLS_AND_PLATFORMS.map((item) => (
+                <div
+                  key={item.name}
+                  title={item.name}
+                  className="aspect-square rounded-xl bg-[#F8F9FB] border border-black/5 hover:border-[#0047FF]/30 flex items-center justify-center hover:scale-110 hover:shadow-md transition-all cursor-pointer p-2 group"
+                >
+                  <img
+                    src={item.icon}
+                    alt={item.name}
+                    className="w-5 h-5 object-contain transition-transform group-hover:scale-110"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
           </div>
 

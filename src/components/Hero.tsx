@@ -490,6 +490,14 @@ export default function Hero({
         <div className="flex items-center justify-between px-4 sm:px-6 md:px-8 py-3">
           {/* Identity */}
           <div className="flex items-center gap-2.5 font-mono whitespace-nowrap flex-shrink-0">
+            <Image
+              src="/logo.png"
+              alt="Sourodip Logo"
+              width={32}
+              height={32}
+              className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
+              priority
+            />
             <span className="font-display font-black text-xs sm:text-sm tracking-tight text-black uppercase whitespace-nowrap">
               Sourodip Roy
             </span>

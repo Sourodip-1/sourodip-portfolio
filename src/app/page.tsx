@@ -9,6 +9,8 @@ import AboutSection from "@/components/AboutSection";
 import IndianArchitecturalDivider from "@/components/IndianArchitecturalDivider";
 import ExperienceSection from "@/components/ExperienceSection";
 import TraditionalPageDivider from "@/components/TraditionalPageDivider";
+import FooterContactSection from "@/components/FooterContactSection";
+import VisitorTestimonialsSection from "@/components/VisitorTestimonialsSection";
 import InterludeSection from "@/components/InterludeSection";
 import GlobalFloatingMenu from "@/components/GlobalFloatingMenu";
 import { scrollToSection } from "@/components/SmoothScroll";
@@ -195,22 +197,11 @@ export default function Home() {
           <InterludeSection />
         </div>
 
-        <footer id="contact" className="w-full bg-black text-white py-20 px-6 sm:px-12">
-          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-8 font-mono text-xs">
-            <div>
-              <div className="text-lg font-bold font-display uppercase tracking-tight mb-2">SOURODIP ROY</div>
-              <p className="text-white/50 text-[11px]">Systems thinking. Creative problem solving. Impact through technology.</p>
-            </div>
-            <div className="flex items-center gap-6 text-white/70">
-              <a href="mailto:contact@sourodip.dev" className="hover:text-white transition-colors">
-                [CONTACT@SOURODIP.DEV]
-              </a>
-              <a href="#work" className="text-[#0047FF] hover:underline">
-                [TOP ↑]
-              </a>
-            </div>
-          </div>
-        </footer>
+        {/* ── 05 VISITOR TESTIMONIALS SECTION (ABOVE CONTACT) ── */}
+        <VisitorTestimonialsSection />
+
+        {/* ── 06 FOOTER & CONTACT TRANSMISSION SECTION ── */}
+        <FooterContactSection />
       </div>
 
       {/* Splash Entrance Layer */}

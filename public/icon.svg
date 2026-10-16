@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1024" height="1024">
+  <defs>
+    <!-- Deep Electric Blue Petal Gradient (Bold #0047FF with sapphire depth) -->
+    <linearGradient id="trueBluePetal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#93C5FD"/>
+      <stop offset="20%" stop-color="#3B82F6"/>
+      <stop offset="55%" stop-color="#0047FF"/>
+      <stop offset="85%" stop-color="#0031B2"/>
+      <stop offset="100%" stop-color="#001F7A"/>
+    </linearGradient>
+
+    <!-- Diamond Accent Gradient -->
+    <linearGradient id="trueBlueDiamond" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#001F7A"/>
+    </linearGradient>
+
+    <!-- Central Ring Gradient -->
+    <linearGradient id="trueBlueRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0047FF"/>
+      <stop offset="100%" stop-color="#002280"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(256,256)">
+    <!-- 8 Primary Petals -->
+    
+      <g transform="rotate(0)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+      <g transform="rotate(45)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+      <g transform="rotate(90)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+      <g transform="rotate(135)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+      <g transform="rotate(180)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+      <g transform="rotate(225)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+      <g transform="rotate(270)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+      <g transform="rotate(315)">
+        <path d="M0 -246 C-60 -155 -38 -78 0 0 C38 -78 60 -155 0 -246 Z" fill="url(#trueBluePetal)" stroke="#001F7A" stroke-width="2" stroke-opacity="0.7"/>
+        <circle cx="0" cy="-228" r="10.5" fill="#FFFFFF"/>
+      </g>
+    
+
+    <!-- 8 Inner Diamonds -->
+    
+      <g transform="rotate(22.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+      <g transform="rotate(67.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+      <g transform="rotate(112.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+      <g transform="rotate(157.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+      <g transform="rotate(202.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+      <g transform="rotate(247.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+      <g transform="rotate(292.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+      <g transform="rotate(337.5)">
+        <path d="M0 -140 L18 -114 L0 -88 L-18 -114 Z" fill="url(#trueBlueDiamond)"/>
+      </g>
+    
+
+    <!-- Concentric Sacred Rings -->
+    <!-- Outer Deep Blue Ring -->
+    <circle cx="0" cy="0" r="100" fill="url(#trueBlueRing)" stroke="#001F7A" stroke-width="3"/>
+    
+    <!-- White Middle Ring -->
+    <circle cx="0" cy="0" r="88" fill="#FFFFFF"/>
+    
+    <!-- Bold #0047FF Electric Blue Core -->
+    <circle cx="0" cy="0" r="66" fill="#0047FF"/>
+    
+    <!-- Central Pure White Bindu Pearl -->
+    <circle cx="0" cy="0" r="32" fill="#FFFFFF"/>
+  </g>
+</svg>

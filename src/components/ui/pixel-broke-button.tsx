@@ -11,6 +11,7 @@ export interface Button03Props {
   variant?: "blue" | "dark" | "outline";
   target?: string;
   rel?: string;
+  download?: string;
   soundEnabled?: boolean;
 }
 
@@ -23,6 +24,7 @@ export const Button03 = ({
   variant = "blue",
   target,
   rel,
+  download,
   soundEnabled = true,
 }: Button03Props) => {
   // Define the index patterns for left and right pixels
@@ -50,6 +52,7 @@ export const Button03 = ({
       onMouseEnter={handleMouseEnter}
       target={target}
       rel={rel}
+      download={download}
       className={`button03 w-inline-block button03--${variant} ${className}`}
     >
       <span className="button03_bg" aria-hidden="true">
