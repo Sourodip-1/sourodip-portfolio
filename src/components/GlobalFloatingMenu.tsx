@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { sound } from "@/lib/sound";
 import { SOUND_TRACKS } from "./SoundControlMenu";
-import { useLenis } from "./SmoothScroll";
+import { useLenis, scrollToSection } from "./SmoothScroll";
 
 export default function GlobalFloatingMenu() {
   const [isVisible, setIsVisible] = useState(false);
@@ -200,23 +200,7 @@ export default function GlobalFloatingMenu() {
     sound.playClick(550);
     setIsOpen(false);
     setIsMusicHovered(false);
-    if (href === "#top" || href === "#home") {
-      if ((window as any).__lenis) {
-        (window as any).__lenis.scrollTo(0, { duration: 1.2 });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-      return;
-    }
-    const targetId = href.replace("#", "");
-    const el = document.getElementById(targetId);
-    if (el) {
-      if ((window as any).__lenis) {
-        (window as any).__lenis.scrollTo(el, { offset: 0, duration: 1.2 });
-      } else {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+    scrollToSection(href, -20);
   };
 
   const activeTrack = SOUND_TRACKS[musicState.currentTrackIdx] || SOUND_TRACKS[0];

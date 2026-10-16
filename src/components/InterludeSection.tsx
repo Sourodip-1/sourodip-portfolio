@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { sound } from "@/lib/sound";
+import { scrollToSection } from "./SmoothScroll";
 
 // ── 01 / KĀLA CHAKRA (ANIMATED TIME WHEEL) ──────────────────────────────────
 function KalaChakraMotif({ isHovered }: { isHovered: boolean }) {
@@ -262,22 +263,7 @@ export default function InterludeSection() {
 
   const handleScrollTo = (targetId: string) => {
     sound.playClick(540);
-    if (targetId === "top") {
-      if ((window as any).__lenis) {
-        (window as any).__lenis.scrollTo(0, { duration: 1.2 });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-      return;
-    }
-    const targetEl = document.getElementById(targetId);
-    if (targetEl) {
-      if ((window as any).__lenis) {
-        (window as any).__lenis.scrollTo(targetEl, { offset: -30, duration: 1.2 });
-      } else {
-        targetEl.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+    scrollToSection(targetId, -30);
   };
 
   const ACTS = [
@@ -334,7 +320,7 @@ export default function InterludeSection() {
 
   return (
     <section
-      id="interlude"
+      id="interlude-section"
       className="relative w-full bg-[#FAF9F5] text-black py-20 sm:py-28 px-6 sm:px-12 border-t border-black/[0.06] overflow-hidden"
     >
       {/* ── BACKGROUND: SACRED SLOW-ROTATING INDIAN MANDALA WATERMARK ──────── */}

@@ -11,6 +11,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import TraditionalPageDivider from "@/components/TraditionalPageDivider";
 import InterludeSection from "@/components/InterludeSection";
 import GlobalFloatingMenu from "@/components/GlobalFloatingMenu";
+import { scrollToSection } from "@/components/SmoothScroll";
 
 export default function Home() {
   const [showEntrance, setShowEntrance] = useState(true);
@@ -68,24 +69,12 @@ export default function Home() {
   // 4 -> Interlude
   // 5 -> Contact
   useEffect(() => {
-    const scrollToTarget = (target: string | number) => {
-      const lenis = (window as any).__lenis;
-      if (typeof target === "number") {
-        if (lenis) {
-          lenis.scrollTo(target, { duration: 1.2 });
-        } else {
-          window.scrollTo({ top: target, behavior: "smooth" });
-        }
-        return;
-      }
-      const el = document.getElementById(target);
-      if (el) {
-        if (lenis) {
-          lenis.scrollTo(el, { offset: 0, duration: 1.2 });
-        } else {
-          el.scrollIntoView({ behavior: "smooth" });
-        }
-      }
+    const navigateToTarget = (target: string | number) => {
+      // Dismiss splash entrance if still active so the destination is immediately revealed
+      setShowEntrance(false);
+      setIsRevealing(false);
+      setHeroRevealed(true);
+      scrollToSection(target, -20);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -100,31 +89,32 @@ export default function Home() {
         return;
       }
 
-      switch (e.key) {
-        case "0":
-          e.preventDefault();
-          scrollToTarget(0);
-          break;
-        case "1":
-          e.preventDefault();
-          scrollToTarget("work");
-          break;
-        case "2":
-          e.preventDefault();
-          scrollToTarget("about");
-          break;
-        case "3":
-          e.preventDefault();
-          scrollToTarget("experience");
-          break;
-        case "4":
-          e.preventDefault();
-          scrollToTarget("interlude");
-          break;
-        case "5":
-          e.preventDefault();
-          scrollToTarget("contact");
-          break;
+      // Do not hijack browser/system shortcuts (Cmd+4, Ctrl+4, Alt+4)
+      if (e.metaKey || e.ctrlKey || e.altKey) {
+        return;
+      }
+
+      const key = e.key;
+      const code = e.code;
+
+      if (key === "0" || code === "Digit0" || code === "Numpad0") {
+        e.preventDefault();
+        navigateToTarget(0);
+      } else if (key === "1" || code === "Digit1" || code === "Numpad1") {
+        e.preventDefault();
+        navigateToTarget("work");
+      } else if (key === "2" || code === "Digit2" || code === "Numpad2") {
+        e.preventDefault();
+        navigateToTarget("about");
+      } else if (key === "3" || code === "Digit3" || code === "Numpad3") {
+        e.preventDefault();
+        navigateToTarget("experience");
+      } else if (key === "4" || code === "Digit4" || code === "Numpad4") {
+        e.preventDefault();
+        navigateToTarget("interlude");
+      } else if (key === "5" || code === "Digit5" || code === "Numpad5") {
+        e.preventDefault();
+        navigateToTarget("contact");
       }
     };
 
@@ -198,11 +188,12 @@ export default function Home() {
           <ExperienceSection />
         </div>
 
-        {/* ── SIMPLE TRADITIONAL PAGE DIVIDER (THRESHOLD TO 04 INTERLUDE) ── */}
-        <TraditionalPageDivider />
-
         {/* ── 04 INTERLUDE SECTION (THE STORY OF HOW THIS SITE IS THEMED) ── */}
-        <InterludeSection />
+        <div id="interlude" className="relative w-full scroll-mt-6">
+          {/* Simple Traditional Page Divider as entrance threshold */}
+          <TraditionalPageDivider />
+          <InterludeSection />
+        </div>
 
         <footer id="contact" className="w-full bg-black text-white py-20 px-6 sm:px-12">
           <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-8 font-mono text-xs">

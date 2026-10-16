@@ -239,6 +239,10 @@ export default function SplashEntrance({
     const coords = getCoords();
     if (onStartRevealRef.current) onStartRevealRef.current(coords);
     sound.playTransition();
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("unlock-and-play-audio"));
+      window.dispatchEvent(new CustomEvent("play-music"));
+    }
     setIsExiting(true);
     setTimeout(() => {
       if (onCompleteRef.current) onCompleteRef.current();

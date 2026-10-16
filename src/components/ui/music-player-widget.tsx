@@ -373,28 +373,57 @@ function useAudioPlayer(
     }
 
     audio.src = tracks[initialIdx]?.src || tracks[0].src;
-    audio.volume = options?.initialVolume ?? 0.2;
+    const targetVol = options?.initialVolume ?? 0.2;
+    audio.volume = targetVol;
     audio.load();
 
     if (options?.autoPlayOnInteraction) {
-      // Attempt immediate play
+      // 1. Attempt immediate unmuted play
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
-          // Blocked by browser autoplay policy — start on first user interaction
-          const triggerStart = () => {
-            audio.play().catch(() => {});
-            window.removeEventListener('pointerdown', triggerStart);
-            window.removeEventListener('scroll', triggerStart);
-            window.removeEventListener('wheel', triggerStart);
-            window.removeEventListener('keydown', triggerStart);
-            window.removeEventListener('touchstart', triggerStart);
+          // 2. Unmuted autoplay was blocked by browser policy on reload.
+          // Start playing MUTED immediately (browser policy always permits muted autoplay)
+          // so the track streams and disc/visualizer animates immediately!
+          audio.muted = true;
+          audio.play().catch(() => {});
+
+          // 3. User Gesture Unlocker:
+          // Listen to genuine user activation events to unmute with sound
+          const handleUserActivation = () => {
+            audio.muted = false;
+            audio.volume = targetVol;
+            const p = audio.play();
+            if (p !== undefined) {
+              p.then(() => {
+                removeActivationListeners();
+              }).catch(() => {
+                // Keep muted until user gesture registers successfully
+                audio.muted = true;
+                audio.play().catch(() => {});
+              });
+            } else {
+              removeActivationListeners();
+            }
           };
-          window.addEventListener('pointerdown', triggerStart, { once: true });
-          window.addEventListener('scroll', triggerStart, { once: true });
-          window.addEventListener('wheel', triggerStart, { once: true });
-          window.addEventListener('keydown', triggerStart, { once: true });
-          window.addEventListener('touchstart', triggerStart, { once: true });
+
+          const removeActivationListeners = () => {
+            window.removeEventListener('pointerdown', handleUserActivation, true);
+            window.removeEventListener('mousedown', handleUserActivation, true);
+            window.removeEventListener('click', handleUserActivation, true);
+            window.removeEventListener('touchstart', handleUserActivation, true);
+            window.removeEventListener('touchend', handleUserActivation, true);
+            window.removeEventListener('keydown', handleUserActivation, true);
+            window.removeEventListener('unlock-and-play-audio', handleUserActivation);
+          };
+
+          window.addEventListener('pointerdown', handleUserActivation, { capture: true });
+          window.addEventListener('mousedown', handleUserActivation, { capture: true });
+          window.addEventListener('click', handleUserActivation, { capture: true });
+          window.addEventListener('touchstart', handleUserActivation, { capture: true });
+          window.addEventListener('touchend', handleUserActivation, { capture: true });
+          window.addEventListener('keydown', handleUserActivation, { capture: true });
+          window.addEventListener('unlock-and-play-audio', handleUserActivation);
         });
       }
     }
@@ -946,6 +975,65 @@ export function MusicPlayer({
       onTrackChange?.(player.state.currentIndex, player.currentTrack);
     }
   }, [player.state.currentIndex, player.currentTrack, onTrackChange]);
+
+  // Global event listeners to allow remote control from HeroVinylPlayer, FloatingMenu, etc.
+  useEffect(() => {
+    const handleToggle = () => {
+      const audio = player.audioRef.current;
+      if (audio) {
+        audio.muted = false;
+        if (audio.volume === 0 && volume > 0) audio.volume = volume;
+      }
+      player.toggle();
+    };
+    const handleNext = () => player.next(true);
+    const handlePrev = () => player.prev();
+    const handlePlay = () => {
+      const audio = player.audioRef.current;
+      if (audio) {
+        audio.muted = false;
+        const targetV = Math.max(0.01, Math.min(1, volume > 0 ? volume : 0.2));
+        audio.volume = targetV;
+        audio.play().catch(() => {});
+      }
+    };
+    const handlePause = () => {
+      if (!player.audioRef.current?.paused) {
+        player.audioRef.current?.pause();
+      }
+    };
+
+    window.addEventListener('toggle-music-play', handleToggle);
+    window.addEventListener('next-music-track', handleNext);
+    window.addEventListener('prev-music-track', handlePrev);
+    window.addEventListener('play-music', handlePlay);
+    window.addEventListener('unlock-and-play-audio', handlePlay);
+    window.addEventListener('pause-music', handlePause);
+
+    return () => {
+      window.removeEventListener('toggle-music-play', handleToggle);
+      window.removeEventListener('next-music-track', handleNext);
+      window.removeEventListener('prev-music-track', handlePrev);
+      window.removeEventListener('play-music', handlePlay);
+      window.removeEventListener('unlock-and-play-audio', handlePlay);
+      window.removeEventListener('pause-music', handlePause);
+    };
+  }, [player, volume]);
+
+  // Broadcast current player state including isPlaying to all UI components
+  useEffect(() => {
+    const currentTrack = tracks[player.state.currentIndex] || player.currentTrack;
+    window.dispatchEvent(
+      new CustomEvent('music-state-sync', {
+        detail: {
+          currentTrackIdx: player.state.currentIndex,
+          isPlaying: player.state.isPlaying,
+          currentTrack,
+          volume,
+        },
+      })
+    );
+  }, [player.state.isPlaying, player.state.currentIndex, player.currentTrack, tracks, volume]);
 
   const [isZoomed, setIsZoomed] = useState(false);
 

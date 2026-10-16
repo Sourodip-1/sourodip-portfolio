@@ -5,6 +5,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { sound } from "@/lib/sound";
 import SoundControlMenu from "./SoundControlMenu";
+import { scrollToSection } from "./SmoothScroll";
+import HeroVinylPlayer from "./HeroVinylPlayer";
 
 interface HeroProps {
   onReplayIntro?: () => void;
@@ -505,11 +507,9 @@ export default function Hero({
                   key={item.num}
                   href={item.href}
                   onClick={(e) => {
+                    e.preventDefault();
                     sound.playClick(500);
-                    if (item.href === "#work") {
-                      e.preventDefault();
-                      document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
-                    }
+                    scrollToSection(item.href, -20);
                   }}
                   onMouseEnter={() => sound.playHover(450)}
                   className="group flex flex-col items-center cursor-pointer py-0.5"
@@ -539,6 +539,9 @@ export default function Hero({
         <div className="px-6 sm:px-10 md:px-12 pb-2 hidden sm:block">
           <DayRuler />
         </div>
+
+        {/* ── HERO MINI ROTATING VINYL DISK PLAYER (PEEKING FROM UNDER NAV) ── */}
+        <HeroVinylPlayer introActive={introActive} isRevealing={isRevealing} />
       </header>
 
       {/* ── MAIN CANVAS ─────────────────────────────────────────────────────── */}
