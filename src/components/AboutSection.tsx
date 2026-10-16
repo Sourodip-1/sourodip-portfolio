@@ -5,6 +5,7 @@ import Image from "next/image";
 import { TechIcons } from "./TechIcons";
 import { Button03 } from "@/components/ui/pixel-broke-button";
 import LottieLoaderMorph from "./LottieLoaderMorph";
+import { IndianJaliFlank, IndianJharokhaFlank, IndianTransitionGuide } from "./IndianSideMotifs";
 
 // The user's exact stepped modular block SVG shape
 export function StepBlock({
@@ -492,32 +493,58 @@ export default function AboutSection() {
 
         </div>
 
-        {/* ── 3 & 4. JAPANESE SOURO ARTWORK (TRANSPARENT CALLIGRAPHY) ─────── */}
+        {/* ── 3 & 4. JAPANESE SOURO ARTWORK (TRANSPARENT CALLIGRAPHY) WITH INDIAN TRANSITION FLANKS ─────── */}
         {/* Strictly NO black background or dark box; pure transparent asset floating cleanly on white page */}
         <div className="mt-16 sm:mt-24 mb-6 flex flex-col items-center justify-center">
 
-          {/* Subtle architectural eyebrow */}
-          <div className="flex items-center gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.25em] text-black/40 uppercase mb-4 font-semibold">
-            <span className="w-8 h-px bg-black/15" />
-            <span>VISUAL INTERLUDE // ソウロ (SOURO)</span>
-            <span className="w-8 h-px bg-black/15" />
-          </div>
+          {/* Style Transition Guide Bar */}
+          <IndianTransitionGuide className="max-w-5xl mb-6 px-2" />
 
-          {/* Transparent artwork preserving 3:1 natural aspect ratio (2172x724) */}
-          <div className="relative w-full max-w-3xl aspect-[2172/724] select-none pointer-events-none">
-            <Image
-              src="/souro-japanese-transparent.png"
-              alt="Souro Japanese Typography Artwork"
-              fill
-              priority={false}
-              className="object-contain filter drop-shadow-[0_12px_28px_rgba(0,71,255,0.14)]"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 768px"
-            />
-          </div>
+          {/* 3-Column Transition Stage: Left Indian Jali, Center Japanese Katakana, Right Indian Jharokha Arch */}
+          <div className="w-full max-w-6xl flex items-center justify-center gap-4 sm:gap-6 lg:gap-8 px-2">
+            
+            {/* Left Flank: Indian Jali & Sacred Geometry (visible md and up) */}
+            <IndianJaliFlank className="hidden md:flex flex-shrink-0" />
 
-          {/* Understated caption matching design study */}
-          <div className="mt-4 flex items-center justify-center gap-2 font-mono text-[10px] sm:text-[11px] text-black/55 tracking-[0.25em] uppercase font-medium">
-            <span>ORIGINAL INDIAN GEOMETRY / PRINT STUDY</span>
+            {/* Center: The Japanese Souro Typography Artwork */}
+            <div className="flex-1 flex flex-col items-center max-w-2xl lg:max-w-3xl">
+              {/* Subtle architectural eyebrow */}
+              <div className="flex items-center gap-3 font-mono text-[10px] sm:text-[11px] tracking-[0.25em] text-black/40 uppercase mb-4 font-semibold">
+                <span className="w-8 h-px bg-black/15" />
+                <span>VISUAL INTERLUDE // ソウロ (SOURO) ✦ सौरदीप</span>
+                <span className="w-8 h-px bg-black/15" />
+              </div>
+
+              {/* Transparent artwork preserving 3:1 natural aspect ratio (2172x724) */}
+              <div className="relative w-full aspect-[2172/724] select-none pointer-events-none">
+                <Image
+                  src="/souro-japanese-transparent.png"
+                  alt="Souro Japanese Typography Artwork"
+                  fill
+                  priority={false}
+                  className="object-contain filter drop-shadow-[0_12px_28px_rgba(0,71,255,0.14)]"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 768px"
+                />
+              </div>
+
+              {/* Understated caption matching design study */}
+              <div className="mt-4 flex items-center justify-center gap-2 font-mono text-[10px] sm:text-[11px] text-black/55 tracking-[0.25em] uppercase font-medium">
+                <span>ORIGINAL INDIAN GEOMETRY / PRINT STUDY</span>
+              </div>
+
+              {/* Mobile Indic script bridge indicator (visible only on mobile where side flanks are hidden) */}
+              <div className="mt-3 md:hidden flex items-center gap-2 font-mono text-[9px] text-[#0047FF] tracking-[0.2em] uppercase font-semibold">
+                <span>॥ सौरदीप ॥</span>
+                <span className="text-black/30">•</span>
+                <span className="text-black/60">INDIAN GEOMETRY</span>
+                <span className="text-black/30">•</span>
+                <span>॥ स्थापत्य ॥</span>
+              </div>
+            </div>
+
+            {/* Right Flank: Indian Jharokha Arch & Lotus Mandala (visible md and up) */}
+            <IndianJharokhaFlank className="hidden md:flex flex-shrink-0" />
+
           </div>
 
         </div>

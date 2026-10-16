@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { sound } from "@/lib/sound";
 
@@ -396,33 +395,14 @@ export default function SplashEntrance({
               BUILD WHAT
             </motion.div>
 
-            {/* Centered MATTERS hero image asset */}
-            <motion.div
+            {/* Structural spacer matching the single continuous MATTERS asset that zooms from Hero */}
+            <div
               className="relative my-1 w-[280px] sm:w-[310px] select-none pointer-events-none"
               style={{
                 aspectRatio: "2172 / 724",
               }}
-              initial={{ opacity: 0, scale: 0.94 }}
-              animate={
-                isExiting
-                  ? { opacity: 0, scale: 1.12 }
-                  : { opacity: 1, scale: 1 }
-              }
-              transition={
-                isExiting
-                  ? { duration: 0.4, ease: "easeOut" }
-                  : { delay: 0.42, duration: 0.75, ease: [0.16, 1, 0.3, 1] }
-              }
-            >
-              <Image
-                src="/MATTERS.png"
-                alt="MATTERS"
-                fill
-                priority
-                unoptimized
-                className="object-contain select-none pointer-events-none drop-shadow-[0_4px_24px_rgba(0,71,255,0.08)]"
-              />
-            </motion.div>
+              aria-hidden="true"
+            />
 
             {/* Developer role metadata */}
             <motion.div

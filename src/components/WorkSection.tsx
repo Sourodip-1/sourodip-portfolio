@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import { sound } from "@/lib/sound";
 import TextLoop from "./TextLoop";
 import { useLenis } from "./SmoothScroll";
@@ -18,66 +19,66 @@ interface Project {
   logo: string;
   logoAlt: string;
   stats?: { label: string; value: string };
-  linkText: string;
-  linkUrl: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  inDevelopment?: boolean;
 }
 
 const PROJECTS: Project[] = [
   {
     num: "01",
     title: "POSTPIPE",
-    category: "POSTPIPE",
+    category: "DEVELOPER TOOLING",
     description:
-      "High-throughput asynchronous media processing infrastructure featuring distributed transcoding queues, edge asset delivery, and multi-channel publishing pipelines.",
-    tags: ["Next.js", "Edge Workers", "Media Pipelines", "Cloud Functions"],
+      "Connect HTML forms directly to MongoDB or PostgreSQL without writing custom backend endpoints. PostPipe simplifies form-to-database workflows so developers can spend less time on boilerplate and more time building.",
+    tags: ["Form-to-DB", "PostgreSQL", "MongoDB", "Zero-Boilerplate", "Next.js"],
     year: "2025",
     logo: "/PostPipe-Black.svg",
     logoAlt: "PostPipe Logo",
-    stats: { label: "THROUGHPUT", value: "10K req/s" },
-    linkText: "View System",
-    linkUrl: "#",
+    stats: { label: "ARCHITECTURE", value: "Zero Backend" },
+    liveUrl: "https://postpipe.in/",
+    githubUrl: "https://github.com/PostPipe/Postpipe-2.0-fontend",
   },
   {
     num: "02",
     title: "KONTEXT",
-    category: "KONTEXT",
+    category: "AI INFRASTRUCTURE",
     description:
-      "A deterministic project memory engine for agentic pair-programming workflows with contextual recall, token-efficient storage, and multi-model synchronization.",
-    tags: ["TypeScript", "Model Context Protocol", "Memory Engine", "Systems Architecture"],
+      "A persistent memory engine for AI agents. Kontext provides a dedicated context layer for storing and retrieving knowledge across interactions, helping agents retain useful information beyond a single conversation.",
+    tags: ["Agent Memory", "Model Context Protocol", "Context Layer", "TypeScript"],
     year: "2026",
     logo: "/Kontext-light.svg",
     logoAlt: "Kontext Logo",
-    stats: { label: "LATENCY", value: "<12ms" },
-    linkText: "View Repository",
-    linkUrl: "#",
+    stats: { label: "CONTEXT LAYER", value: "Cross-Session" },
+    liveUrl: "https://kontext.postpipe.in",
+    githubUrl: "https://github.com/PostPipe/kontext",
   },
   {
     num: "03",
-    title: "FLOW",
-    category: "FLOW",
+    title: "FLOW GUARDIAN",
+    category: "DEVELOPER EXPERIENCE",
     description:
-      "Real-time creative canvas engine built for 60FPS fluid physics simulations, kinetic typography, dynamic vector paths, and GPU-accelerated interface choreography.",
-    tags: ["WebGL", "GLSL Shaders", "GSAP", "Creative Frontend"],
+      "A background codebase guardian watching full-stack development for issues before they escalate — catching API mismatches, database query errors, missing env variables, and WebSocket bugs early.",
+    tags: ["Codebase Guardian", "Static Analysis", "Full-Stack Dev", "Developer Tooling"],
     year: "2025",
     logo: "/Flow-Logo.svg",
-    logoAlt: "Flow Logo",
-    stats: { label: "PERFORMANCE", value: "60 FPS" },
-    linkText: "Launch Demo",
-    linkUrl: "#",
+    logoAlt: "Flow Guardian Logo",
+    stats: { label: "INSPECTION", value: "Real-time" },
+    liveUrl: "https://flow.postpipe.in",
+    githubUrl: "https://github.com/Sourodip-1/Api-Check",
   },
   {
     num: "04",
     title: "BUFFER",
-    category: "BUFFER",
+    category: "SMART QUEUEING",
     description:
-      "Fault-tolerant real-time event streaming pipeline designed for distributed telemetry collection, live metrics dashboards, and zero-loss message routing.",
-    tags: ["Distributed Systems", "WebSockets", "Pub/Sub", "Kafka / Redis"],
-    year: "2024",
+      "A smart queue management system that replaces physical waiting with scheduled, fair, and travel-aware service slots. Buffer balances first-come-first-served ordering with priority and travel feasibility, helping institutions manage queues more efficiently.",
+    tags: ["Smart Queueing", "Slot Allocation", "Travel-Aware", "Scheduling Engine"],
+    year: "2026",
     logo: "/Buffer-logo.svg",
     logoAlt: "Buffer Logo",
-    stats: { label: "UPTIME", value: "99.99%" },
-    linkText: "Read Spec",
-    linkUrl: "#",
+    stats: { label: "STATUS", value: "In Development" },
+    inDevelopment: true,
   },
 ];
 
@@ -88,8 +89,9 @@ export default function WorkSection() {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const progressTextRef = useRef<HTMLSpanElement>(null);
 
-  const [activeProjectIndex, setActiveProjectIndex] = useState(1); // default to 02 KONTEXT per concept image
-  const activeIndexRef = useRef(1);
+  const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const activeIndexRef = useRef(0);
 
   // Cached layout bounds to eliminate layout thrashing on scroll
   const layoutCacheRef = useRef<{ top: number; total: number; maxR: number }>({
@@ -106,7 +108,7 @@ export default function WorkSection() {
     const total = Math.max(1, el.offsetHeight - window.innerHeight);
     const cardW = cardRef.current?.offsetWidth || 1200;
     const cardH = cardRef.current?.offsetHeight || 640;
-    const maxR = Math.hypot(cardW / 2, cardH / 2) + 20;
+    const maxR = Math.hypot(cardW / 2, cardH / 2) + 120;
     layoutCacheRef.current = { top: docTop, total, maxR };
   }, []);
 
@@ -124,22 +126,37 @@ export default function WorkSection() {
     if (cardRef.current) {
       const minR = 12; // 24px diameter white dot
 
-      if (easedExp >= 0.98) {
+      if (easedExp >= 0.999) {
         cardRef.current.style.clipPath = "none";
         (cardRef.current.style as any).webkitClipPath = "none";
-        cardRef.current.style.transform = "scale(1)";
       } else {
         const currentR = Math.round(minR + easedExp * (maxR - minR));
         const clipVal = `circle(${currentR}px at 50% 50%)`;
         cardRef.current.style.clipPath = clipVal;
         (cardRef.current.style as any).webkitClipPath = clipVal;
+      }
+
+      // Smooth entrance scale & exit cushion
+      if (p < 0.16) {
         cardRef.current.style.transform = `scale(${0.96 + easedExp * 0.04})`;
+        cardRef.current.style.opacity = "1";
+      } else if (p >= 0.94) {
+        // Smooth exit elevation cushion as user approaches the next section
+        const exitProgress = (p - 0.94) / 0.06;
+        const exitScale = 1 - exitProgress * 0.035;
+        const exitY = -exitProgress * 24;
+        const exitOpacity = 1 - exitProgress * 0.15;
+        cardRef.current.style.transform = `translateY(${exitY}px) scale(${exitScale})`;
+        cardRef.current.style.opacity = String(exitOpacity);
+      } else {
+        cardRef.current.style.transform = "scale(1)";
+        cardRef.current.style.opacity = "1";
       }
     }
 
     // 2. Content opacity smoothly dissolves in as the circular aperture expands
     if (contentRef.current) {
-      const contentOpacity = Math.max(0, Math.min(1, (easedExp - 0.12) / 0.88));
+      const contentOpacity = Math.max(0, Math.min(1, (easedExp - 0.1) / 0.9));
       contentRef.current.style.opacity = String(contentOpacity);
       contentRef.current.style.pointerEvents = contentOpacity > 0.6 ? "auto" : "none";
     }
@@ -153,7 +170,7 @@ export default function WorkSection() {
       progressTextRef.current.textContent = `${pct}% EXPLORED`;
     }
 
-    // 4. Update React state ONLY when active index actually changes
+    // 4. Update React state with direction when active index actually changes
     let nextIdx = 0;
     if (p >= 0.16) {
       const sub = (p - 0.16) / 0.84;
@@ -161,8 +178,11 @@ export default function WorkSection() {
     }
 
     if (nextIdx !== activeIndexRef.current) {
+      const dir = nextIdx > activeIndexRef.current ? 1 : -1;
+      setDirection(dir);
       activeIndexRef.current = nextIdx;
       setActiveProjectIndex(nextIdx);
+      sound.playDayTick(650 + nextIdx * 45);
     }
   }, []);
 
@@ -195,12 +215,14 @@ export default function WorkSection() {
   // Navigate directly to a project
   const scrollToProject = (index: number) => {
     sound.playClick(560);
+    const dir = index > activeIndexRef.current ? 1 : -1;
+    setDirection(dir);
     const { top, total } = layoutCacheRef.current;
     const targetProgress = 0.16 + ((index + 0.5) / 4) * 0.84;
     const targetScroll = top + targetProgress * total;
 
     if ((window as any).__lenis) {
-      (window as any).__lenis.scrollTo(targetScroll, { duration: 0.8 });
+      (window as any).__lenis.scrollTo(targetScroll, { duration: 0.9 });
     } else {
       window.scrollTo({ top: targetScroll, behavior: "smooth" });
     }
@@ -357,6 +379,7 @@ export default function WorkSection() {
                   mouseStrength={1.4}
                   mouseRadius={0.35}
                   clickPulse
+                  triggerPulseKey={activeProjectIndex}
                   intro={false}
                   lightMode={true}
                   transparent={false}
@@ -405,153 +428,342 @@ export default function WorkSection() {
                 pointerEvents: "none",
                 willChange: "opacity",
               }}
-              className="w-full h-full flex flex-col justify-between pt-9 pb-8 px-6 sm:px-10 md:px-12 lg:px-14 overflow-hidden transition-opacity duration-200 relative z-10"
+              className="w-full h-full flex flex-col justify-between pt-6 sm:pt-7 pb-5 sm:pb-6 px-5 sm:px-8 md:px-10 lg:px-12 overflow-hidden transition-opacity duration-200 relative z-10"
             >
               {/* ── TOP ROW: MONOSPACE TABS & PROGRESS FRACTION ───────────────── */}
               <div className="w-full flex items-center justify-between pb-3 sm:pb-4 pl-4 sm:pl-6">
-                {/* Clean Unboxed Monospace Navigation Tabs */}
-                <div className="flex items-center gap-4 sm:gap-8 overflow-x-auto no-scrollbar">
+                {/* Clean Unboxed Monospace Navigation Tabs with Gliding Spring Underline */}
+                <div className="flex items-center gap-4 sm:gap-8 overflow-x-auto no-scrollbar relative py-1">
                   {PROJECTS.map((proj, idx) => {
                     const isActive = idx === activeProjectIndex;
                     return (
                       <button
                         key={proj.num}
                         onClick={() => scrollToProject(idx)}
-                        className="group flex flex-col items-start cursor-pointer transition-all duration-200"
+                        className="relative group flex flex-col items-start cursor-pointer pb-2 pt-1 transition-all"
                       >
                         <span
-                          className={`font-mono text-xs tracking-wider transition-colors ${
+                          className={`font-mono text-xs tracking-wider transition-colors duration-200 ${
                             isActive
-                              ? "text-[#0047FF] font-semibold"
+                              ? "text-[#0047FF] font-bold"
                               : "text-black/45 hover:text-black"
                           }`}
                         >
                           [{proj.num}] {proj.title}
                         </span>
-                        {/* Blue Underline on Active Tab */}
-                        <div
-                          className={`h-[2px] w-full mt-1.5 transition-all duration-200 ${
-                            isActive ? "bg-[#0047FF] opacity-100" : "bg-transparent opacity-0"
-                          }`}
-                        />
+                        {/* Smooth spring sliding active glider */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeWorkTabUnderline"
+                            className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#0047FF] rounded-full"
+                            transition={{
+                              type: "spring",
+                              stiffness: 460,
+                              damping: 34,
+                            }}
+                          />
+                        )}
                       </button>
                     );
                   })}
                 </div>
 
-                {/* Top-Right Fraction Counter (e.g., 02 / 04) */}
-                <div className="font-mono text-xs sm:text-sm text-black/55 tracking-widest font-normal pr-2">
-                  {activeProject.num} / 04
+                {/* Top-Right Rolling Fraction Counter (e.g., 01 / 04) */}
+                <div className="font-mono text-xs sm:text-sm text-black/60 tracking-widest font-normal pr-2 flex items-center select-none">
+                  <div className="relative h-5 overflow-hidden inline-flex items-center">
+                    <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+                      <motion.span
+                        key={activeProject.num}
+                        custom={direction}
+                        variants={{
+                          enter: (d: number) => ({
+                            y: d > 0 ? 16 : -16,
+                            opacity: 0,
+                            filter: "blur(2px)",
+                          }),
+                          center: {
+                            y: 0,
+                            opacity: 1,
+                            filter: "blur(0px)",
+                          },
+                          exit: (d: number) => ({
+                            y: d > 0 ? -16 : 16,
+                            opacity: 0,
+                            filter: "blur(2px)",
+                          }),
+                        }}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-bold text-[#0047FF]"
+                      >
+                        {activeProject.num}
+                      </motion.span>
+                    </AnimatePresence>
+                  </div>
+                  <span className="text-black/40 ml-1.5 font-medium">/ 04</span>
                 </div>
               </div>
 
               {/* ── MAIN CONTENT: SPLIT BLUEPRINT SPECIFICATION ──────────────── */}
-              <div className="w-full flex-1 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-10 py-2 sm:py-4 overflow-hidden">
-                {/* ── LEFT SPECIFICATIONS COLUMN ─────────────────────────────── */}
-                <div className="flex-1 flex flex-col justify-between h-full max-w-2xl pl-2 sm:pl-4">
-                  <div>
-                    {/* Eyebrow: PROJECT // KONTEXT */}
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="relative inline-block">
-                        <span className="font-serif italic text-base sm:text-lg text-[#0047FF] tracking-wide font-normal">
-                          PROJECT
-                        </span>
-                        {/* Sketched blueprint pen underline */}
-                        <svg
-                          className="absolute -bottom-1 left-0 w-full h-[6px] text-[#0047FF] overflow-visible pointer-events-none"
-                          viewBox="0 0 56 6"
-                          fill="none"
-                        >
-                          <path
-                            d="M 1 4 C 14 1.5, 34 5, 55 2 M 2 5 C 18 3, 38 4, 53 4.5"
-                            stroke="#0047FF"
-                            strokeWidth="1.15"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                      </div>
-                      <span className="font-mono text-xs text-[#0047FF] tracking-widest font-semibold uppercase">
-                        // {activeProject.title}
-                      </span>
-                    </div>
-
-                    {/* Massive Bold Uppercase Title */}
-                    <h3 className="font-display font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight text-black uppercase my-3 sm:my-4 transition-all duration-200">
-                      {activeProject.title}
-                    </h3>
-
-                    {/* Description with Left Vertical Blue Border */}
-                    <div className="border-l-2 border-[#0047FF] pl-4 my-4 sm:my-6">
-                      <p className="font-mono text-[12px] sm:text-[13px] text-black/75 leading-relaxed max-w-lg">
-                        {activeProject.description}
-                      </p>
-                    </div>
-
-                    {/* Tags in Crisp Rectangular Outline Boxes — fits single row on desktop */}
-                    <div className="flex flex-wrap gap-2 sm:gap-2.5 mb-6">
-                      {activeProject.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="font-mono text-[10px] sm:text-[11px] text-black/75 px-2.5 sm:px-3 py-1.5 border border-black/20 bg-transparent rounded-none tracking-wide whitespace-nowrap"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Bottom Row: Link CTA & Arrow Navigation (NO dividing border line) */}
-                  <div className="pt-2 flex items-center justify-between mt-auto">
-                    {/* Left: View Repository link */}
-                    <a
-                      href={activeProject.linkUrl}
-                      onClick={() => sound.playClick(600)}
-                      className="inline-flex items-center gap-3 font-mono text-xs sm:text-sm text-black hover:text-[#0047FF] transition-colors tracking-wider font-medium group cursor-pointer"
+              <div className="w-full flex-1 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-10 py-2 sm:py-4 overflow-hidden relative">
+                {/* ── LEFT SPECIFICATIONS COLUMN WITH DIRECTIONAL MOTION ─────── */}
+                <div className="flex-1 flex flex-col justify-between h-full max-w-2xl pl-2 sm:pl-4 relative w-full overflow-visible">
+                  <AnimatePresence mode="wait" custom={direction} initial={false}>
+                    <motion.div
+                      key={activeProject.num}
+                      custom={direction}
+                      variants={{
+                        enter: (d: number) => ({
+                          y: d > 0 ? 22 : -22,
+                          opacity: 0,
+                          filter: "blur(6px)",
+                        }),
+                        center: {
+                          y: 0,
+                          opacity: 1,
+                          filter: "blur(0px)",
+                          transition: {
+                            duration: 0.35,
+                            ease: [0.16, 1, 0.3, 1],
+                            staggerChildren: 0.045,
+                            delayChildren: 0.02,
+                          },
+                        },
+                        exit: (d: number) => ({
+                          y: d > 0 ? -18 : 18,
+                          opacity: 0,
+                          filter: "blur(4px)",
+                          transition: {
+                            duration: 0.18,
+                            ease: [0.4, 0, 1, 1],
+                          },
+                        }),
+                      }}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      className="w-full h-full flex flex-col justify-between"
                     >
-                      <span className="text-[#0047FF] text-lg font-bold group-hover:translate-x-1 transition-transform">
-                        →
-                      </span>
-                      <span>{activeProject.linkText}</span>
-                    </a>
+                      <div>
+                        {/* Eyebrow: PROJECT // TITLE */}
+                        <motion.div
+                          variants={{
+                            enter: { opacity: 0, y: 10 },
+                            center: { opacity: 1, y: 0 },
+                          }}
+                          transition={{ duration: 0.28 }}
+                          className="flex items-center gap-3 mb-1 sm:mb-1.5"
+                        >
+                          <div className="relative inline-block">
+                            <span className="font-serif italic text-base sm:text-lg text-[#0047FF] tracking-wide font-normal">
+                              PROJECT
+                            </span>
+                            {/* Sketched blueprint pen underline */}
+                            <svg
+                              className="absolute -bottom-1 left-0 w-full h-[6px] text-[#0047FF] overflow-visible pointer-events-none"
+                              viewBox="0 0 56 6"
+                              fill="none"
+                            >
+                              <path
+                                d="M 1 4 C 14 1.5, 34 5, 55 2 M 2 5 C 18 3, 38 4, 53 4.5"
+                                stroke="#0047FF"
+                                strokeWidth="1.15"
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                          </div>
+                          <span className="font-mono text-xs text-[#0047FF] tracking-widest font-semibold uppercase">
+                            // {activeProject.category}
+                          </span>
+                        </motion.div>
 
-                    {/* Right: Monospace Arrow Navigation ( ← | → ) */}
-                    <div className="flex items-center gap-4 font-mono text-base text-black/60 select-none">
-                      <button
-                        onClick={() =>
-                          scrollToProject((activeProjectIndex + 3) % PROJECTS.length)
-                        }
-                        className="hover:text-[#0047FF] transition-colors cursor-pointer px-1 text-lg font-light"
-                        title="Previous project"
+                        {/* Massive Bold Uppercase Title */}
+                        <motion.h3
+                          variants={{
+                            enter: { opacity: 0, y: 16 },
+                            center: { opacity: 1, y: 0 },
+                          }}
+                          transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                          className={`font-display font-black tracking-tight text-black uppercase ${
+                            activeProject.title.length > 10
+                              ? "text-3xl sm:text-4xl lg:text-[42px] my-1.5 sm:my-2 leading-none"
+                              : "text-4xl sm:text-5xl lg:text-6xl my-2 sm:my-3"
+                          }`}
+                        >
+                          {activeProject.title}
+                        </motion.h3>
+
+                        {/* Description with Left Vertical Blue Border */}
+                        <motion.div
+                          variants={{
+                            enter: { opacity: 0, y: 12 },
+                            center: { opacity: 1, y: 0 },
+                          }}
+                          transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                          className="border-l-2 border-[#0047FF] pl-3.5 my-2 sm:my-2.5"
+                        >
+                          <p className="font-mono text-[11px] sm:text-[12px] text-black/75 leading-relaxed max-w-lg">
+                            {activeProject.description}
+                          </p>
+                        </motion.div>
+
+                        {/* Tags in Crisp Rectangular Outline Boxes with Stagger */}
+                        <motion.div
+                          variants={{
+                            enter: { opacity: 0 },
+                            center: {
+                              opacity: 1,
+                              transition: { staggerChildren: 0.03, delayChildren: 0.06 },
+                            },
+                          }}
+                          className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3"
+                        >
+                          {activeProject.tags.map((tag) => (
+                            <motion.span
+                              key={tag}
+                              variants={{
+                                enter: { opacity: 0, scale: 0.9, y: 6 },
+                                center: { opacity: 1, scale: 1, y: 0 },
+                              }}
+                              transition={{ duration: 0.22, ease: "easeOut" }}
+                              className="font-mono text-[9px] sm:text-[10px] text-black/75 px-2.5 py-1 border border-black/20 bg-transparent rounded-none tracking-wide whitespace-nowrap"
+                            >
+                              {tag}
+                            </motion.span>
+                          ))}
+                        </motion.div>
+                      </div>
+
+                      {/* Bottom Row: Action Links / Status & Arrow Navigation */}
+                      <motion.div
+                        variants={{
+                          enter: { opacity: 0, y: 8 },
+                          center: { opacity: 1, y: 0 },
+                        }}
+                        transition={{ duration: 0.28 }}
+                        className="pt-1.5 flex flex-wrap items-center justify-between gap-3 mt-auto shrink-0 relative z-20"
                       >
-                        ←
-                      </button>
-                      <span className="text-black/25 font-light">|</span>
-                      <button
-                        onClick={() =>
-                          scrollToProject((activeProjectIndex + 1) % PROJECTS.length)
-                        }
-                        className="hover:text-[#0047FF] transition-colors cursor-pointer px-1 text-lg font-light"
-                        title="Next project"
-                      >
-                        →
-                      </button>
-                    </div>
-                  </div>
+                        {/* Left: Action Links or In Development Badge */}
+                        <div className="flex flex-wrap items-center gap-3">
+                          {activeProject.inDevelopment ? (
+                            <div className="inline-flex items-center gap-2.5 font-mono text-xs text-[#b45309] bg-[#fffbeb] px-3.5 py-1.5 border border-[#f59e0b]/40 rounded-full shadow-sm">
+                              <span className="w-2 h-2 rounded-full bg-[#f59e0b] animate-pulse" />
+                              <span className="font-semibold tracking-wider uppercase">✦ In Development</span>
+                            </div>
+                          ) : (
+                            <>
+                              {activeProject.liveUrl && (
+                                <a
+                                  href={activeProject.liveUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={() => sound.playClick(600)}
+                                  className="inline-flex items-center gap-2 font-mono text-xs sm:text-[13px] text-white bg-[#0047FF] hover:bg-black px-4 py-2 transition-all tracking-wider font-semibold shadow-sm hover:shadow group cursor-pointer"
+                                >
+                                  <span>Live System</span>
+                                  <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200">
+                                    ↗
+                                  </span>
+                                </a>
+                              )}
+                              {activeProject.githubUrl && (
+                                <a
+                                  href={activeProject.githubUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={() => sound.playClick(520)}
+                                  className="inline-flex items-center gap-2 font-mono text-xs sm:text-[13px] text-black hover:text-[#0047FF] bg-black/[0.03] hover:bg-[#0047FF]/10 border border-black/25 hover:border-[#0047FF] px-3.5 py-2 transition-all tracking-wider font-medium group cursor-pointer"
+                                >
+                                  <span>GitHub</span>
+                                  <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200">
+                                    ↗
+                                  </span>
+                                </a>
+                              )}
+                            </>
+                          )}
+                        </div>
+
+                        {/* Right: Monospace Arrow Navigation */}
+                        <div className="flex items-center gap-4 font-mono text-base text-black/60 select-none">
+                          <button
+                            onClick={() =>
+                              scrollToProject((activeProjectIndex + 3) % PROJECTS.length)
+                            }
+                            className="hover:text-[#0047FF] transition-all cursor-pointer px-1 text-lg font-light hover:scale-110 active:scale-95"
+                            title="Previous project"
+                          >
+                            ←
+                          </button>
+                          <span className="text-black/25 font-light">|</span>
+                          <button
+                            onClick={() =>
+                              scrollToProject((activeProjectIndex + 1) % PROJECTS.length)
+                            }
+                            className="hover:text-[#0047FF] transition-all cursor-pointer px-1 text-lg font-light hover:scale-110 active:scale-95"
+                            title="Next project"
+                          >
+                            →
+                          </button>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
 
-                {/* ── RIGHT LOGO COLUMN ────────────────────────────────────────── */}
+                {/* ── RIGHT LOGO COLUMN WITH FLUID DIRECTIONAL SCALE & ROTATION ─ */}
                 <div className="flex-1 flex items-center justify-center relative w-full h-full pointer-events-none">
-                  {/* Centered Original Vector Logo with subtle float shadow */}
-                  <div className="relative w-44 h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 flex items-center justify-center select-none pointer-events-none z-10">
-                    <Image
+                  <AnimatePresence mode="wait" custom={direction} initial={false}>
+                    <motion.div
                       key={activeProject.num}
-                      src={activeProject.logo}
-                      alt={activeProject.logoAlt}
-                      fill
-                      priority
-                      className="object-contain p-2 drop-shadow-[0_10px_28px_rgba(0,71,255,0.12)] transition-all duration-300"
-                    />
-                  </div>
+                      custom={direction}
+                      variants={{
+                        enter: (d: number) => ({
+                          scale: 0.85,
+                          opacity: 0,
+                          y: d > 0 ? 28 : -28,
+                          rotate: d > 0 ? -5 : 5,
+                          filter: "blur(8px)",
+                        }),
+                        center: {
+                          scale: 1,
+                          opacity: 1,
+                          y: 0,
+                          rotate: 0,
+                          filter: "blur(0px)",
+                          transition: {
+                            duration: 0.4,
+                            ease: [0.16, 1, 0.3, 1],
+                          },
+                        },
+                        exit: (d: number) => ({
+                          scale: 0.88,
+                          opacity: 0,
+                          y: d > 0 ? -22 : 22,
+                          rotate: d > 0 ? 4 : -4,
+                          filter: "blur(6px)",
+                          transition: {
+                            duration: 0.18,
+                            ease: [0.4, 0, 1, 1],
+                          },
+                        }),
+                      }}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      className="relative w-44 h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 flex items-center justify-center select-none pointer-events-none z-10"
+                    >
+                      <Image
+                        src={activeProject.logo}
+                        alt={activeProject.logoAlt}
+                        fill
+                        priority
+                        className="object-contain p-2 drop-shadow-[0_10px_28px_rgba(0,71,255,0.12)]"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </div>
             </div>

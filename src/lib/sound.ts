@@ -98,6 +98,53 @@ class SoundFX {
     }
   }
 
+  public playCardHover(pitchIndex = 0) {
+    if (!this.isEnabled) return;
+    this.initCtx();
+    if (!this.ctx) return;
+
+    try {
+      // Indian classical pentatonic harmonic bell frequencies (Sa, Re, Ga, Pa, Dha)
+      const freqs = [329.63, 370.00, 415.30, 493.88, 554.37];
+      const freq = freqs[pitchIndex % freqs.length] || 329.63;
+      const now = this.ctx.currentTime;
+
+      // Primary warm chime
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now);
+
+      gain.gain.setValueAtTime(0.045, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.18);
+
+      // Delicate acoustic octave overtone
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(freq * 2, now);
+
+      gain2.gain.setValueAtTime(0.015, now);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+
+      osc2.start(now);
+      osc2.stop(now + 0.12);
+    } catch {
+      // ignore
+    }
+  }
+
   public playPixelHover() {
     if (!this.isEnabled) return;
     this.initCtx();

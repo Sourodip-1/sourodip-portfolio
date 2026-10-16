@@ -192,7 +192,7 @@ export default function GlobalFloatingMenu() {
     { num: "01", label: "WORK", href: "#work" },
     { num: "02", label: "ABOUT", href: "#about" },
     { num: "03", label: "EXPERIENCE", href: "#experience" },
-    { num: "04", label: "PLAYGROUND", href: "#playground" },
+    { num: "04", label: "INTERLUDE", href: "#interlude" },
     { num: "05", label: "CONTACT", href: "#contact" },
   ];
 

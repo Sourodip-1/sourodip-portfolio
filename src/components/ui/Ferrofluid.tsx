@@ -474,6 +474,7 @@ export interface FerrofluidProps {
   paused?: boolean;
   dpr?: number;
   mixBlendMode?: React.CSSProperties['mixBlendMode'];
+  triggerPulseKey?: number | string;
   className?: string;
   style?: React.CSSProperties;
   [key: string]: any;
@@ -499,6 +500,7 @@ export default function Ferrofluid({
   mouseRadius = 0.22,
   mouseDampening = 0.15,
   clickPulse = true,
+  triggerPulseKey,
   intro = true,
   lightMode = false,
   transparent = true,
@@ -514,6 +516,7 @@ export default function Ferrofluid({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wakeRef = useRef<(() => void) | null>(null);
+  const pulseFnRef = useRef<((x?: number, y?: number) => void) | null>(null);
 
   const effectiveMagnetism = magnets !== undefined ? magnets : magnetism;
 
@@ -913,6 +916,14 @@ export default function Ferrofluid({
     document.addEventListener('visibilitychange', onVisibility);
     resize();
 
+    pulseFnRef.current = (px = 0, py = 0) => {
+      if (reduce) return;
+      pulse.x = px;
+      pulse.y = py;
+      pulse.age = 0;
+      wake();
+    };
+
     let lastDpr = settingsRef.current.dpr;
     wakeRef.current = () => {
       const s = settingsRef.current;
@@ -927,6 +938,7 @@ export default function Ferrofluid({
     return () => {
       cancelAnimationFrame(raf);
       wakeRef.current = null;
+      pulseFnRef.current = null;
       resizeObserver.disconnect();
       intersection.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
@@ -944,6 +956,12 @@ export default function Ferrofluid({
       gl.deleteVertexArray(vao);
     };
   }, []);
+
+  useEffect(() => {
+    if (triggerPulseKey !== undefined) {
+      pulseFnRef.current?.(0, 0);
+    }
+  }, [triggerPulseKey]);
 
   useEffect(() => {
     wakeRef.current?.();

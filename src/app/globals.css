@@ -35,7 +35,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -60,6 +59,10 @@
 
 .font-serif-editorial {
   font-family: var(--font-serif-display), "Cormorant Garamond", Georgia, serif !important;
+}
+
+.font-cinzel {
+  font-family: var(--font-cinzel), "Cinzel", "Cormorant Garamond", Georgia, serif !important;
 }
 
 .font-mono {

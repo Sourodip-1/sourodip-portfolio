@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Cormorant_Garamond, Cinzel } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
@@ -7,6 +7,12 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const cormorant = Cormorant_Garamond({
@@ -58,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased selection:bg-[#0047FF] selection:text-white`}
+      className={`${spaceGrotesk.variable} ${cinzel.variable} ${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased selection:bg-[#0047FF] selection:text-white`}
     >
       <body className="min-h-screen bg-white text-black font-sans overflow-x-clip">
         <SmoothScroll>{children}</SmoothScroll>

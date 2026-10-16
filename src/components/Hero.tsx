@@ -422,20 +422,27 @@ export default function Hero({
   isRevealing = false,
 }: HeroProps = {}) {
   const [time, setTime] = useState("");
-  const [splashRatio, setSplashRatio] = useState(0.24);
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerOffset, setHeaderOffset] = useState(38);
+  const [splashScale, setSplashScale] = useState(0.225);
 
   useEffect(() => {
     const calc = () => {
       if (typeof window === "undefined") return;
       const vw = window.innerWidth;
-      const splashW = Math.min(vw * 0.82, 330);
+      const splashW = vw < 640 ? 280 : 310;
       const heroW = Math.min(vw * 0.92, 1380);
-      setSplashRatio(splashW / heroW);
+      setSplashScale(splashW / heroW);
+      if (headerRef.current) {
+        setHeaderOffset(headerRef.current.offsetHeight / 2);
+      }
     };
     calc();
     window.addEventListener("resize", calc);
     return () => window.removeEventListener("resize", calc);
   }, []);
+
+  const isZoomed = !introActive || isRevealing;
 
   useEffect(() => {
     const istFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -457,7 +464,7 @@ export default function Hero({
     { num: "01", label: "WORK", href: "#work" },
     { num: "02", label: "ABOUT", href: "#about" },
     { num: "03", label: "EXPERIENCE", href: "#experience" },
-    { num: "04", label: "PLAYGROUND", href: "#playground" },
+    { num: "04", label: "INTERLUDE", href: "#interlude" },
     { num: "05", label: "CONTACT", href: "#contact" },
   ];
 
@@ -466,6 +473,7 @@ export default function Hero({
 
       {/* ── FROSTED GLASS NAV ───────────────────────────────────────────────── */}
       <header
+        ref={headerRef}
         className="relative z-30 w-full flex flex-col transition-opacity duration-700"
         style={{
           background: "rgba(255,255,255,0.75)",
@@ -473,6 +481,7 @@ export default function Hero({
           WebkitBackdropFilter: "blur(20px) saturate(1.6)",
           borderBottom: "1px solid rgba(0,0,0,0.055)",
           opacity: introActive && !isRevealing ? 0 : 1,
+          pointerEvents: introActive && !isRevealing ? "none" : "auto",
         }}
       >
         {/* Main nav row */}
@@ -592,23 +601,39 @@ export default function Hero({
           </div>
         </div>
 
-        {/* MATTERS visual asset from public/MATTERS.png — fades and scales in on reveal */}
+        {/* MATTERS visual asset from public/MATTERS.png — single continuous zooming asset from splash to hero */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden select-none z-10">
           <motion.div
             className="relative flex items-center justify-center -translate-y-2 w-[92vw] max-w-[1380px]"
             style={{
               aspectRatio: "2172 / 724",
               transformOrigin: "center center",
+              willChange: "transform",
             }}
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{
+              opacity: 0,
+              scale: 0.225,
+              y: -38,
+            }}
             animate={{
-              opacity: introActive && !isRevealing ? 0 : 1,
-              scale: introActive && !isRevealing ? 0.92 : 1,
-              y: 0,
+              opacity: 1,
+              scale: isZoomed ? 1 : splashScale,
+              y: isZoomed ? 0 : -headerOffset,
             }}
             transition={{
-              duration: 1.0,
-              ease: [0.22, 1, 0.36, 1],
+              scale: {
+                duration: isZoomed ? 1.25 : 0.85,
+                ease: [0.16, 1, 0.3, 1],
+              },
+              y: {
+                duration: isZoomed ? 1.25 : 0.85,
+                ease: [0.16, 1, 0.3, 1],
+              },
+              opacity: {
+                duration: 0.7,
+                delay: 0.35,
+                ease: "easeOut",
+              },
             }}
           >
             <Image

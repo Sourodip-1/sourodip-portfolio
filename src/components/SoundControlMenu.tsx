@@ -6,6 +6,18 @@ import MusicPlayer, { type Track } from "@/components/ui/music-player-widget";
 
 export const SOUND_TRACKS: Track[] = [
   {
+    title: "मस्ती का मेला",
+    artist: "Sourodip",
+    cover: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&auto=format&fit=crop&q=80",
+    src: "/मस्ती का मेला.wav",
+  },
+  {
+    title: "Endless Sky",
+    artist: "Sourodip",
+    cover: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&auto=format&fit=crop&q=80",
+    src: "/Endless Sky.wav",
+  },
+  {
     title: "Red Line Climb",
     artist: "Devs",
     cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&auto=format&fit=crop&q=80",

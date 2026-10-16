@@ -27,7 +27,7 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
       ref={lenisRef}
       root
       options={{
-        lerp: 0.16,
+        lerp: 0.095,
         smoothWheel: true,
         wheelMultiplier: 1.0,
         touchMultiplier: 1.2,
