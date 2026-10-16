@@ -1,0 +1,160 @@
+/* Pixel Broke Button Styles */
+.button03 {
+  --btn-bg: #0047FF;
+  --btn-color: #ffffff;
+  
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 28px;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  line-height: 1;
+  color: var(--btn-color);
+  isolation: isolate;
+  border-radius: 2px;
+}
+
+.button03:active {
+  transform: scale(0.97);
+}
+
+/* Variant: Cobalt Blue */
+.button03--blue {
+  --btn-bg: #0047FF;
+  --btn-color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 71, 255, 0.25);
+}
+.button03--blue:hover {
+  --btn-bg: #003CD4;
+  box-shadow: 0 6px 20px rgba(0, 71, 255, 0.38);
+}
+
+/* Variant: Jet Black */
+.button03--dark {
+  --btn-bg: #0A0A0A;
+  --btn-color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+.button03--dark:hover {
+  --btn-bg: #1F1F24;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+}
+
+/* Variant: Outline / White */
+.button03--outline {
+  --btn-bg: #FFFFFF;
+  --btn-color: #0A0A0A;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 0 1.5px rgba(0, 0, 0, 0.2);
+}
+.button03--outline:hover {
+  --btn-bg: #F4F4F5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 0 0 0 1.5px rgba(0, 0, 0, 0.85);
+}
+
+/* Background container */
+.button03_bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Mid solid center span */
+.button03_bg-mid {
+  flex: 1;
+  background-color: var(--btn-bg);
+  transition: background-color 0.2s ease;
+}
+
+/* Left & Right Pixel Grids */
+.button03_bg-left,
+.button03_bg-right {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  grid-template-rows: repeat(4, 1fr);
+  width: 12px;
+  height: 100%;
+  position: relative;
+  overflow: visible;
+}
+
+.button03_bg-left {
+  margin-right: -1px;
+}
+.button03_bg-right {
+  margin-left: -1px;
+}
+
+/* Individual broken pixels */
+.button03_bg-pixel {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--btn-bg);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, background-color 0.2s ease;
+  transform: translate3d(0, 0, 0);
+  opacity: calc(1 - (var(--index) * 0.12));
+}
+
+/* On hover: pixels glitch / shatter outward based on their --index */
+.button03:hover .button03_bg-left .button03_bg-pixel {
+  transform: translate3d(calc(var(--index) * -2.5px), 0, 0);
+  transition-delay: calc(var(--index) * 15ms);
+}
+
+.button03:hover .button03_bg-right .button03_bg-pixel {
+  transform: translate3d(calc(var(--index) * 2.5px), 0, 0);
+  transition-delay: calc(var(--index) * 15ms);
+}
+
+/* Inner Text Container with Premium Roll Effect */
+.button03_inner {
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  height: 14px;
+}
+
+.button03_text {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.button03_inner::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  transform: translateY(0);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--btn-color);
+  white-space: nowrap;
+}
+
+.button03:hover .button03_text {
+  transform: translateY(-100%);
+}
+
+.button03:hover .button03_inner::after {
+  transform: translateY(-100%);
+}

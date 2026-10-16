@@ -1,0 +1,362 @@
+/* ── 21st.dev Music Player Widget Stylesheet ────────────────────────────── */
+
+@keyframes cover-in {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cover-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes ti-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--dx, 14px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ti-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(var(--dx, -14px));
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 71, 255, 0.18);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  user-select: none;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  border-color: rgba(0, 71, 255, 0.38);
+  box-shadow: 0 12px 32px rgba(0, 71, 255, 0.1);
+}
+
+.mask {
+  position: relative;
+  width: 80px !important;
+  height: 80px !important;
+  min-width: 80px !important;
+  min-height: 80px !important;
+  max-width: 80px !important;
+  max-height: 80px !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  background: #050505;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.32), inset 0 0 0 1.5px rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mask:hover {
+  transform: scale(1.04);
+}
+
+.mask.is-zoomed {
+  transform: scale(1.1);
+}
+
+.spin {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform-origin: center center;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}
+
+.cover {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  pointer-events: none;
+}
+
+.cover-enter {
+  animation: cover-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cover-exit {
+  animation: cover-out 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #0047FF;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hole-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0047FF;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  position: relative;
+}
+
+.scales {
+  width: 44px;
+  height: 48px;
+  fill: #0047FF;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.track-info {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  padding-left: 8px;
+}
+
+.ti-layer {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ti-abs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.artist {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: #0047FF;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.artist.ti-enter {
+  animation: ti-in 0.4s ease forwards;
+}
+
+.artist.ti-exit {
+  animation: ti-out 0.4s ease forwards;
+}
+
+.track {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.track.ti-enter {
+  animation: ti-in 0.4s ease forwards;
+}
+
+.track.ti-exit {
+  animation: ti-out 0.4s ease forwards;
+}
+
+.bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 71, 255, 0.12);
+  border-radius: 9999px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin-top: 6px;
+  transition: height 0.15s ease;
+}
+
+.bar:hover {
+  height: 6px;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #0047FF;
+  border-radius: 9999px;
+  transition: width 0.08s linear;
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 3px;
+  letter-spacing: 0.05em;
+}
+
+.sep {
+  margin: 0 2px;
+  opacity: 0.5;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.ctrl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.ctrl:hover {
+  color: #0047FF;
+  background: rgba(0, 71, 255, 0.06);
+}
+
+.ctrl-play {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0047FF;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 71, 255, 0.35);
+}
+
+.ctrl-play:hover {
+  transform: scale(1.08);
+  background: #003cd0;
+  box-shadow: 0 4px 12px rgba(0, 71, 255, 0.45);
+}
+
+.ctrl-toggle.is-active {
+  color: #0047FF;
+}
+
+.ctrl-loop {
+  position: relative;
+}
+
+.loop-one {
+  display: none;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  font-size: 7.5px;
+  font-weight: 800;
+  color: #0047FF;
+}
+
+.ctrl-loop.mode-one .loop-one {
+  display: block;
+}
+
+/* 
+  ── HOVER INTERACTION:
+  Per user specification: only show the cover and the audio visualizer.
+  If hovered, reveal the controls and progress bar!
+*/
+.card .bar,
+.card .time,
+.card .controls {
+  opacity: 0;
+  max-height: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover .bar,
+.card:hover .time,
+.card:hover .controls {
+  opacity: 1;
+  max-height: 44px;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.card:hover .bar {
+  margin-top: 6px;
+}
+
+.card:hover .controls {
+  margin-top: 6px;
+}

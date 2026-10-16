@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "kontext": {
+      "command": "C:/Program Files/Kontext/resources/core/kontext-mcp.exe",
+      "args": []
+    }
+  }
+}

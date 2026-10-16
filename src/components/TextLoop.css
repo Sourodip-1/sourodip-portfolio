@@ -1,0 +1,28 @@
+.text-loop {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.text-loop-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.text-loop-group {
+  pointer-events: auto;
+}
+
+.text-loop-text {
+  user-select: none;
+  pointer-events: visiblePainted;
+  cursor: pointer;
+}
+
+.text-loop-measure {
+  visibility: hidden;
+  pointer-events: none;
+}

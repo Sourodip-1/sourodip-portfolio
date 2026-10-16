@@ -1,0 +1,181 @@
+@import "tailwindcss";
+@import "../components/ui/music-player-widget.css";
+
+@theme {
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-serif: var(--font-serif-display), "Cormorant Garamond", Georgia, serif;
+  --font-serif-editorial: var(--font-serif-display), "Cormorant Garamond", Georgia, serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
+@layer base {
+  :root {
+    --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+    --font-sans: var(--font-inter), system-ui, sans-serif;
+    --font-mono: var(--font-mono), monospace;
+    --font-serif: var(--font-serif-display), "Cormorant Garamond", Georgia, serif;
+
+    /* Palette */
+    --color-white: #ffffff;
+    --color-snow: #f8fafc;
+    --color-deep-blue: #030712;
+    --color-abyss: #050b24;
+    --color-cobalt: #0047ff;
+    --color-cobalt-light: #2563eb;
+    --color-sky: #38bdf8;
+    --color-sky-soft: #7dd3fc;
+    --color-black: #050505;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #ffffff;
+    color: #09090b;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.03em;
+  }
+}
+
+/* Explicit font utilities outside @layer base to guarantee high priority */
+.font-display {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif !important;
+}
+
+.font-serif-editorial {
+  font-family: var(--font-serif-display), "Cormorant Garamond", Georgia, serif !important;
+}
+
+.font-mono {
+  font-family: var(--font-mono), monospace !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0047ff;
+}
+
+/* Subtle Film Noise / Grain */
+.noise-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.grid-bg {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.grid-bg-light {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 71, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 71, 255, 0.05) 1px, transparent 1px);
+}
+
+/* Perspective & 3D transformations */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Text Stroke */
+.text-stroke-white {
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.35);
+  color: transparent;
+}
+
+.text-stroke-cobalt {
+  -webkit-text-stroke: 1.5px #0047ff;
+  color: transparent;
+}
+
+.text-stroke-dark {
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.25);
+  color: transparent;
+}
+
+/* Fluid animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Continuous smooth rotation for celestial dials with zero stutter */
+@keyframes revolveDial {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes revolveDialCounter {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
